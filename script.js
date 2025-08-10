@@ -151,17 +151,25 @@ const renderDailyView = (date) => {
         const prayerStatus = todayData[prayer].status;
         const prayerItem = document.createElement('div');
         prayerItem.classList.add('prayer-item');
-        prayerItem.dataset.prayer = prayer;
-        prayerItem.dataset.date = dateKey;
 
         const prayerContent = document.createElement('div');
         prayerContent.classList.add('prayer-item-content');
         prayerContent.innerHTML = `
             <h4>${prayer}</h4>
-            <p>${prayerStatus !== 'none' ? `Status: ${prayerStatus}` : 'Click to log'}</p>
+            <p>Status: ${prayerStatus}</p>
         `;
         
+        const logButton = document.createElement('button');
+        logButton.classList.add('log-button');
+        logButton.dataset.prayer = prayer;
+        logButton.dataset.date = dateKey;
+        logButton.textContent = prayerStatus !== 'none' ? 'Logged' : 'Log Prayer';
+        if (prayerStatus !== 'none') {
+            logButton.classList.add('logged');
+        }
+        
         prayerItem.appendChild(prayerContent);
+        prayerItem.appendChild(logButton);
         prayerTrackerDiv.appendChild(prayerItem);
     }
 };
@@ -194,10 +202,21 @@ const renderMonthlyView = (date) => {
         const dailyData = namaazData[dateKey];
         
         const prayerCount = dailyData ? Object.values(dailyData).filter(p => p.status !== 'none').length : 0;
-        const totalPoints = dailyData ? Object.values(dailyData).reduce((sum, p) => sum + p.points, 0) : 0;
+        const completionPercentage = (prayerCount / 5) * 100;
 
         day.dataset.date = dateKey;
-        day.innerHTML = `<span class="day-number">${i}</span><span class="day-points">${prayerCount}/5</span>`;
+        day.innerHTML = `
+            <span class="day-number">${i}</span>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: ${completionPercentage}%;"></div>
+            </div>
+        `;
+        
+        const progressBar = day.querySelector('.progress-bar');
+        if (completionPercentage === 100) {
+            progressBar.classList.add('completed');
+        }
+
         if (formatDateKey(dayDate) === formatDateKey(new Date())) {
             day.classList.add('today');
         }
@@ -293,7 +312,7 @@ const showView = (viewName) => {
 // --- Modal Functions ---
 
 // Show the prayer logging modal
-const showModal = (date, prayerName = 'Fajr') => {
+const showModal = (date, prayerName) => {
     prayerModal.style.display = 'flex';
     modalDate.textContent = formatReadableDate(date);
     modalPrayerName.textContent = prayerName;
@@ -318,19 +337,21 @@ const showModal = (date, prayerName = 'Fajr') => {
 
 // --- Event Handlers ---
 
-// Handles saving daily progress
+// This function is no longer needed since we handle saving via the modal
 const handleSaveDailyProgress = () => {
+    // This is now handled by modal saves
     saveNamaazData();
     updateStats();
     renderDailyView(currentDailyViewDate);
 };
 
-// Handles click on a daily prayer item
+// Handles click on a daily prayer item's log button
 const handlePrayerItemClick = (event) => {
-    const prayerItem = event.target.closest('.prayer-item');
-    if (prayerItem) {
-        const prayer = prayerItem.dataset.prayer;
-        const dateKey = prayerItem.dataset.date;
+    // We now only want to handle clicks on the "log-button"
+    const logButton = event.target.closest('.log-button');
+    if (logButton) {
+        const prayer = logButton.dataset.prayer;
+        const dateKey = logButton.dataset.date;
         const prayerDate = new Date(dateKey);
         showModal(prayerDate, prayer);
     }
