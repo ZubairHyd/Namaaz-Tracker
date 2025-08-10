@@ -3,23 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Namaaz Tracker</title>
+    <title>Namaaz Tracker Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Main header for the app -->
-        <h1 class="header">Daily Namaaz Tracker</h1>
+    <div class="dashboard-container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1>Namaaz Tracker</h1>
+            <div class="stats-container">
+                <div class="stat-card points-card">
+                    <i class="fa-solid fa-coins"></i>
+                    <span id="total-points">0</span>
+                    <p>Total Points</p>
+                </div>
+                <div class="stat-card streak-card">
+                    <i class="fa-solid fa-fire-flame-curved"></i>
+                    <span id="current-streak">0</span>
+                    <p>Day Streak</p>
+                </div>
+            </div>
+        </header>
 
-        <!-- Displays the current date, to be updated by JavaScript -->
-        <div id="current-date" class="date-display"></div>
-        
-        <!-- The list of prayers will be dynamically added here by JavaScript -->
-        <ul id="prayer-list" class="prayer-list"></ul>
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-view="daily">Daily</button>
+            <button class="nav-tab" data-view="monthly">Monthly</button>
+            <button class="nav-tab" data-view="yearly">Yearly</button>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="content-area">
+            <!-- Daily View -->
+            <div id="daily-view" class="view active-view">
+                <div class="date-header">
+                    <button id="prev-day"><i class="fa-solid fa-chevron-left"></i></button>
+                    <h2 id="daily-date"></h2>
+                    <button id="next-day"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div id="prayer-tracker">
+                    <!-- Prayer inputs will be dynamically added here -->
+                </div>
+                <button id="save-daily-progress" class="save-button">Save</button>
+            </div>
+
+            <!-- Monthly View -->
+            <div id="monthly-view" class="view">
+                <div class="month-header">
+                    <button id="prev-month"><i class="fa-solid fa-chevron-left"></i></button>
+                    <h2 id="monthly-title"></h2>
+                    <button id="next-month"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div class="calendar-grid-container">
+                    <div class="weekdays">
+                        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                    </div>
+                    <div id="calendar-grid" class="calendar-grid">
+                        <!-- Calendar days will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Yearly View -->
+            <div id="yearly-view" class="view">
+                <div class="year-header">
+                    <button id="prev-year"><i class="fa-solid fa-chevron-left"></i></button>
+                    <h2 id="yearly-title"></h2>
+                    <button id="next-year"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div id="yearly-calendar-grid" class="yearly-calendar-grid">
+                    <!-- Months and their calendars will be dynamically added here -->
+                </div>
+            </div>
+        </main>
     </div>
 
-    <!-- Link to the JavaScript file -->
+    <!-- Modal for logging prayer details -->
+    <div id="prayer-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 id="modal-date"></h3>
+            <h4 id="modal-prayer-name"></h4>
+            <p>How was this prayer offered?</p>
+            <div class="modal-options">
+                <label><input type="radio" name="prayer-status" value="jamaat"> Jamaat (5 Points)</label>
+                <label><input type="radio" name="prayer-status" value="individual"> Individual (3 Points)</label>
+                <label><input type="radio" name="prayer-status" value="qaza"> Qaza (2 Points)</label>
+                <label><input type="radio" name="prayer-status" value="none"> Not Offered (0 Points)</label>
+            </div>
+            <button id="modal-save-button">Save</button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
