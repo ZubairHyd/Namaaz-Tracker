@@ -153,14 +153,12 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    cursor: pointer;
     transition: all 0.2s ease;
     border: 2px solid transparent;
 }
 
 .prayer-item:hover {
     background-color: #e0f2fe;
-    border-color: #63b3ed;
 }
 
 .prayer-item-content {
@@ -179,6 +177,31 @@ body {
     margin: 0;
     font-size: 0.9rem;
     color: #718096;
+}
+
+.log-button {
+    background-color: #4299e1;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.75rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.log-button:hover {
+    background-color: #2b6cb0;
+    transform: scale(1.05);
+}
+
+.log-button.logged {
+    background-color: #48bb78;
+}
+
+.log-button.logged:hover {
+    background-color: #38a169;
 }
 
 .save-button {
@@ -228,7 +251,7 @@ body {
 }
 
 .calendar-grid .day {
-    padding: 1rem 0;
+    padding: 0.5rem 0;
     border: 1px solid #e2e8f0;
     font-weight: 600;
     cursor: pointer;
@@ -236,6 +259,11 @@ body {
     position: relative;
     border-radius: 0.5rem;
     margin: 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px; /* Fixed height for consistent look */
 }
 
 .calendar-grid .day.today {
@@ -252,15 +280,39 @@ body {
     cursor: not-allowed;
 }
 
-.day .day-number {
+.day-number {
     font-size: 1.1rem;
+    padding-top: 0.25rem;
 }
 
-.day .day-points {
+.day-points {
     font-size: 0.8rem;
     color: #718096;
     margin-top: 0.25rem;
     font-weight: 400;
+}
+
+/* New Progress bar styling */
+.progress-container {
+    width: 80%;
+    height: 8px;
+    background-color: #cbd5e0;
+    border-radius: 4px;
+    margin-top: auto; /* Pushes it to the bottom */
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    background: linear-gradient(to right, #4299e1, #63b3ed);
+}
+
+.progress-bar.completed {
+    background: linear-gradient(to right, #48bb78, #68d391);
 }
 
 .yearly-calendar-grid {
@@ -304,11 +356,14 @@ body {
     width: 90%;
     max-width: 500px;
     position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .close-button {
     color: #aaa;
-    float: right;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
